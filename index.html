@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <title>Laugh Counter</title>
+        <style>
+            .button-group {
+                margin-bottom: 10px;
+            }
+        </style>
+        <script>
+            let eventLog = [];
+            let startTime = null;
+
+            const setStartTime = () => {
+                startTime = Date.now()
+                console.log("Start Time Set")
+            }
+
+            const pushEvent = (eventName) => {
+                console.log(Date.now())
+                console.log(startTime)
+                eventLog.push({event: eventName, timestamp: Date.now() - startTime})
+                console.log("Logged: " + eventName)
+            }
+
+            // https://stackoverflow.com/a/58769574
+            const convertToCSV = (arr) => {
+                const array = [Object.keys(arr[0])].concat(arr)
+
+                return array.map(it => {
+                    return Object.values(it).toString()
+                }).join('\n')
+            }
+
+            const printLog = () => {
+                let eventCanvas = document.getElementById("event-log")
+                eventCanvas.innerText = convertToCSV(eventLog)
+            }
+        </script>
+    </head>
+    <h1>Audience Response Logger</h1>
+    
+    <div class="button-group">
+        <button style="background-color: greenyellow;" onclick="setStartTime()">Start Timer</button>
+    </div>
+    
+    <div class="button-group">
+        <button style="background-color: aquamarine;" onclick="pushEvent('start_laugh')">Start Laugh</button>
+        <button onclick="pushEvent('stop_laugh')">Stop Laugh</button>
+    </div>
+    <div class="button-group">
+        <button style="background-color: aquamarine;" onclick="pushEvent('start_applause')">Start Applause</button>
+        <button onclick="pushEvent('stop_applause')">Stop Applause</button>
+    </div>
+    <button onclick="printLog()">Print</button>
+
+    <p id="event-log"></p>
+</html>
